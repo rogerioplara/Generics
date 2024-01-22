@@ -34,6 +34,7 @@ public class Main {
 
         TIPOS CURINGA DELIMITADOS
 
+        é possível delimitar os tipos curinga, ou tornar um método genérico para os tipos curinga.
 
          */
 
@@ -55,6 +56,8 @@ public class Main {
         myCircles.add(new Circle(3.0));
 
         System.out.println("total area: " + totalArea(myCircles));
+
+        putGetProblem();
     }
 
     // Essa declaração define que a lista pode ser de shape ou de qualquer tipo de shape
@@ -129,5 +132,47 @@ public class Main {
         for (Object obj : list){
             System.out.println(obj);
         }
+        System.out.println();
+    }
+
+    public static void covarianciaContravariancia(){
+        // Covariância - Operação get é permitida, porém não o put
+        List<Integer> intList = new ArrayList<Integer>();
+        intList.add(10);
+        intList.add(5);
+
+        List<? extends Number> list = intList;
+
+        Number x = list.get(0);
+
+//        list.add(20); // erro de compilação
+
+        // Contravariância - Operação put é permitida, porém não o get
+        List<Object> myObjs = new ArrayList<Object>();
+        myObjs.add("Maria");
+        myObjs.add("Alex");
+
+        List<? super Number> myNums = myObjs;
+        myNums.add(10);
+        myNums.add(3.14);
+
+//        Number x = myNums.get(0); // erro de compilação
+    }
+
+    public static void putGetProblem() {
+        List<Integer> myInts = Arrays.asList(1, 2, 3, 4);
+        List<Double> myDoubles = Arrays.asList(3.14, 6.28);
+        List<Object> myObjs = new ArrayList<Object>();
+
+        copy(myInts, myObjs);
+        printList(myObjs);
+        copy(myDoubles, myObjs);
+        printList(myObjs);
+    }
+
+    // Método que vai realizar a cópia. Para isso, é necessário que o argumento possa receber qualquer tipo de number
+    public static void copy(List<? extends Number> source, List<? super Number> destiny){
+        // método do collections para adicionar todos os elementos da lista em uma nova - poderia ser feito com um foreach
+        destiny.addAll(source);
     }
 }
